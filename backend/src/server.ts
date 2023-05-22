@@ -1,6 +1,6 @@
 import { app } from './app'
 
-const porta = process.env.PORT || 3000
+const porta = process.env.PORT || 3000 
 
 const server = app.listen(porta, () => console.log(`App ouvindo na port ${porta}`))
 
