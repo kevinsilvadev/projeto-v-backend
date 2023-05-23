@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-var Connection = require('tedious').Connection;  
+import { Connection } from 'tedious';
 
 dotenv.config()
 

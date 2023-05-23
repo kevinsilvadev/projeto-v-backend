@@ -1,30 +1,17 @@
-import { Router } from 'express'    
-export const router = Router()
-const sql = require('mssql')
+import { Request, Response, Router } from 'express';
+import sql from 'mssql';
+export const router: Router = Router();
 
-import { config } from '../bd'
 
-router.get('/alunos', async (req, res) => {
-    try {
-      const pool = await sql.connect(config);
-      const result = await pool.request().query('SELECT * FROM ALUNOS');
-      res.send(result.recordset);
-    } catch (error) {
-      console.log(error);
-      res.status(500).send('Erro ao buscar os dados do banco de dados.');
-    }
-  });
+import AlunosController from '../controllers/AlunosController';
+const alunosController: AlunosController = new AlunosController();
 
-  
-  router.get('/cursos', async (req, res) => {
-    try {
-      const pool = await sql.connect(config);
-      const result = await pool.request().query('SELECT * FROM CURSOS');
-      res.send(result.recordset);
-    } catch (error) {
-      console.log(error);
-      res.status(500).send('Erro ao buscar os dados do banco de dados.');
-    }
-  });
+import CursosController from '../controllers/CursosController';
+const cursosController: CursosController = new CursosController();
 
-  
+
+router.get('/alunos', alunosController.listarAlunos)
+
+router.get('/cursos', cursosController.listarCursos)
+
+router.post('/alunos', alunosController.criarAlunos)

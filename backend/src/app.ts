@@ -13,3 +13,5 @@ app.use(logger('dev'))
 
 //Integra endpoint na aplicação
 app.use('/', router)
+
+
