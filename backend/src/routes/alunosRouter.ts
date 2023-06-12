@@ -8,5 +8,6 @@ const alunosController: AlunosController = new AlunosController()
 router.get('/alunos', alunosController.listarAlunos)
 router.post('/alunos', alunosController.criarAlunos)
 router.delete('/alunos', alunosController.deletarAlunos)
+router.put('/alunos', alunosController.atualizarAlunos)
 
 
