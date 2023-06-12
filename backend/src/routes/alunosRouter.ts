@@ -9,4 +9,8 @@ router.get('/alunos', alunosController.listarAlunos)
 router.post('/alunos', alunosController.criarAlunos)
 router.delete('/alunos', alunosController.deletarAlunos)
 
+//login
+router.post('/login', alunosController.loginAluno)
 
+
+// NAO TA FUNCIONANDO

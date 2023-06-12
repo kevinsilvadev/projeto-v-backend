@@ -1,4 +1,7 @@
 class Aluno {
+    static listarAlunos(arg0: { userToken: String; }) {
+      throw new Error('Method not implemented.');
+    }
     id?: number;
     email: string;
     senha: string;

@@ -15,3 +15,4 @@ router.get('/alunos', alunosController.listarAlunos)
 router.get('/cursos', cursosController.listarCursos)
 
 router.post('/alunos', alunosController.criarAlunos)
+router.post('/login', alunosController.loginAluno)
