@@ -13,6 +13,7 @@ class AlunosController {
       const alunos = result.recordset.map((aluno: Alunos) => {
         return {
           id: aluno.id,
+          nome_completo: aluno.nome_completo,
           email: aluno.email,
           senha: aluno.senha,
           celular: aluno.celular,
@@ -20,6 +21,7 @@ class AlunosController {
           cep: aluno.cep,
           bairro: aluno.bairro,
           rua: aluno.rua,
+          data_nasc: aluno.data_nasc,
           empregado: aluno.empregado,
           area_profissao: aluno.area_profissao,
         };
@@ -30,19 +32,14 @@ class AlunosController {
       res.status(500).send('Erro ao buscar os dados do banco de dados.');
     }
   }
+
   async criarAlunos(req: Request, res: Response): Promise<void> {
     try {
       const aluno = Alunos.fromMap(req.body);
       const pool = await sql.connect(config);
-      
-      // Password criptografado
-      const salt = await bcrypt.genSalt(12)
-      const passwordHash = await bcrypt.hash(aluno.senha, salt)
-
-
       const result = await pool
         .request()
-        .query(`INSERT INTO ALUNOS (email, senha, celular, estado, cep, bairro, rua, empregado, area_profissao) VALUES ('${aluno.email}', '${passwordHash}', '${aluno.celular}', '${aluno.estado}', '${aluno.cep}', '${aluno.bairro}', '${aluno.rua}', '${aluno.empregado}', '${aluno.area_profissao}')`);
+        .query(`INSERT INTO ALUNOS (nome_completo, email, senha, celular, estado, cep, bairro, rua, data_nasc, empregado, area_profissao) VALUES ('${aluno.nome_completo}', '${aluno.email}', '${aluno.senha}', '${aluno.celular}', '${aluno.estado}', '${aluno.cep}', '${aluno.bairro}', '${aluno.rua}', '${aluno.data_nasc}','${aluno.empregado}', '${aluno.area_profissao}')`);
       res
         .status(201)
         .send('Aluno criado com sucesso');
@@ -82,7 +79,7 @@ class AlunosController {
       console.log(error);
     }
   }
-  
+
   async loginAluno(req: Request, res: Response): Promise<void> {
     try {
       const aluno = Alunos.fromMap(req.body);
@@ -90,12 +87,12 @@ class AlunosController {
 
       const { email, senha } = req.body;
       // validations
-  
-      if(!email) {
+
+      if (!email) {
         res.status(422).send('O email é obrigatório!')
       }
-  
-      if(!senha) {
+
+      if (!senha) {
         res.status(422).send('A senha é obrigatória!')
       }
 
@@ -103,7 +100,7 @@ class AlunosController {
 
       console.log(user);
 
-      if(!user) {
+      if (!user) {
         res.status(404).send('Usuário não encontrado!')
       }
 
@@ -112,13 +109,14 @@ class AlunosController {
       // if(!checkPassword) {
       //   res.status(422).send('Senha inválida!')
       // }
-      
-  
+
+
     } catch (error) {
       res.status(500).send('Erro ao efetuar o login');
       console.log(error)
     }
   }
+
 }
 
 export default AlunosController;
