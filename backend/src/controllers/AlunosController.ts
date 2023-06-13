@@ -3,6 +3,8 @@ import sql, { pool } from 'mssql';
 import { config } from '../bd';
 import Alunos from '../models/Alunos';
 import bcrypt from 'bcrypt';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import {env} from '../env';
 
 class AlunosController {
   async listarAlunos(req: Request, res: Response): Promise<void> {
@@ -79,8 +81,30 @@ class AlunosController {
       console.log(error);
     }
   }
+  async acharPeloId(req: Request, res: Response) {
+    try {
+      const token = req.params.id;
 
-  async loginAluno(req: Request, res: Response): Promise<void> {
+      const { id } = jwt.verify(token, env.JWT_PASS) as JwtPayload
+  
+      const pool = await sql.connect(config);
+      const result = await pool
+          .request()
+          .query(`SELECT email, celular, estado, cep, bairro, rua, empregado, area_profissao, nome_completo, data_nasc FROM ALUNOS WHERE ID_ALUNO=${id}`);
+      
+      let aluno = Alunos.fromMap(result.recordset[0]);
+  
+      if(!result){
+        res.status(404).send('Usuário não encontrado!')
+      }
+  
+      res.status(200).send(aluno);
+    } catch (error) {
+      res.status(500).json({msg: 'Token inválido'});
+    }
+  }
+
+  async loginAluno(req: Request, res: Response) {
     try {
       const aluno = Alunos.fromMap(req.body);
       const pool = await sql.connect(config);
@@ -96,9 +120,7 @@ class AlunosController {
         res.status(422).send('A senha é obrigatória!')
       }
 
-      const user = await pool.request().query(`SELECT * FROM ALUNOS WHERE email='${email}';`);
-
-      console.log(user);
+      const user = await pool.request().query(`SELECT * FROM ALUNOS WHERE email='${email}';`); 
 
       if (!user) {
         res.status(404).send('Usuário não encontrado!')
@@ -106,9 +128,31 @@ class AlunosController {
 
       // const checkPassword = await bcrypt.compare(senha, aluno.senha)
 
-      // if(!checkPassword) {
+      // if (!checkPassword) {
       //   res.status(422).send('Senha inválida!')
       // }
+
+      try {
+
+        const aluno = Alunos.fromMap(user.recordset[0])
+
+        console.log(aluno)
+
+        const token = jwt.sign(
+          {
+            id: aluno.id,
+          },
+          env.JWT_PASS,
+          {
+            expiresIn: 60 * 60 * 3,
+          },
+        );
+
+        res.status(200).json({msg: 'Autenticação realizada com sucesso', token})
+      } catch (error) {
+        res.status(500).send('Erro ao efetuar o login');
+        console.log(error)
+      }
 
 
     } catch (error) {

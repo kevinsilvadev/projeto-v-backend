@@ -12,7 +12,8 @@ class Aluno {
   empregado: string;
   area_profissao: string;
 
-  constructor(nome_completo: string, email:string, senha:string, celular:string, estado:string, cep:string, bairro:string, rua:string, data_nasc:string, empregado:string, area_profissao:string){
+  constructor(id: number,nome_completo: string, email:string, senha:string, celular:string, estado:string, cep:string, bairro:string, rua:string, data_nasc:string, empregado:string, area_profissao:string){
+    this.id = id
     this.nome_completo = nome_completo
     this.email = email;
     this.senha = senha;
@@ -28,6 +29,7 @@ class Aluno {
 
   static fromMap(reqBody: any): Aluno{
     return new Aluno(
+      reqBody['ID_ALUNO'],
       reqBody['nome_completo'],
       reqBody['email'],                                                                                                                        
       reqBody['senha'],

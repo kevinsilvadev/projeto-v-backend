@@ -16,3 +16,4 @@ router.get('/cursos', cursosController.listarCursos)
 
 router.post('/alunos', alunosController.criarAlunos)
 router.post('/login', alunosController.loginAluno)
+router.get('/alunos/:id', alunosController.acharPeloId)
