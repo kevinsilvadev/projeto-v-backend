@@ -15,6 +15,3 @@ router.get('/alunos/:id', alunosController.acharPeloId)
 
 //login
 router.post('/login', alunosController.loginAluno)
-
-
-// NAO TA FUNCIONANDO

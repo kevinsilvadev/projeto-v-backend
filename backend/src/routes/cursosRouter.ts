@@ -10,4 +10,3 @@ router.post('/cursos', cursosController.criarCursos)
 router.delete('/cursos', cursosController.deletarCursos)
 router.put('/cursos', cursosController.atualizarCursos)
 
-// NAO TA FUNCIONANDO

@@ -1,37 +1,47 @@
 class Curso {
-    ID_CURSOS: number;
-    urlPhoto: string;
-    nome_cursos: string;
-    descricao: string;
-    ID_ALUNO: number;
-
-    
-    constructor(ID_CURSOS: number, urlPhoto: string, nome_cursos: string, descricao: string, ID_ALUNO: number){
-      this.ID_CURSOS = ID_CURSOS;
-      this.urlPhoto = urlPhoto;
-      this.nome_cursos = nome_cursos;
-      this.descricao = descricao;
-      this.ID_ALUNO = ID_ALUNO;
-
-    }
+  id?: number;
+  urlPhoto: string;
+  nome: string;
+  descricao: string;
 
 
-    static fromMap(reqBody: any): Curso{
-      return new Curso(
-        reqBody['ID_CURSOS'],                                                                                                                        
-        reqBody['urlPhoto'],
-        reqBody['nome_cursos'],
-        reqBody['descricao'],
-        reqBody['ID_ALUNO'],
-  
-      );
-    }
-  
-    toString(): string{
-      return `id_cursos: ${this.ID_CURSOS}, urlPhoto: ${this.urlPhoto}, nome_cursos: ${this.nome_cursos}, descricao: ${this.descricao}, id_aluno: ${this.ID_ALUNO}`
+  constructor(id: number, urlPhoto: string, nome_cursos: string, descricao: string) {
+    this.id = id;
+    this.urlPhoto = urlPhoto;
+    this.nome = nome_cursos;
+    this.descricao = descricao;
+
+  }
+
+  static kId = 'ID_CURSOS';
+  static kUrlPhoto = 'urlPhoto';
+  static kNome = 'nome';
+  static kDescricao = 'descricao';
+
+
+  static fromMap(reqBody: any): Curso {
+    return new Curso(
+      reqBody[Curso.kId],
+      reqBody[Curso.kUrlPhoto],
+      reqBody[Curso.kNome],
+      reqBody[Curso.kDescricao],
+    );
+  }
+
+  toMap(): {} {
+    return {
+      [Curso.kId]: this.id,
+      [Curso.kUrlPhoto]: this.urlPhoto,
+      [Curso.kNome]: this.nome,
+      [Curso.kDescricao]: this.descricao,
     }
   }
-  
+
+  toString(): string {
+    return `id_cursos: ${this.id}, urlPhoto: ${this.urlPhoto}, nome_cursos: ${this.nome}, descricao: ${this.descricao}`
+  }
+}
 
 
-  export default Curso;
+
+export default Curso;
