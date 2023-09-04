@@ -11,11 +11,11 @@ class CursosController {
   
       const alunos = result.recordset.map((curso: Curso) => {
         return {
-            id: curso.ID_CURSOS,
+            id: curso.id,
             urlPhoto:curso.urlPhoto,
-            nome_cursos: curso.nome_cursos,
+            nome_cursos: curso.nome,
             descricao: curso.descricao,
-            id_aluno: curso.ID_ALUNO
+            id_aluno: curso.id
         };
       });
       res.send(alunos);
@@ -32,7 +32,7 @@ class CursosController {
       const pool = await sql.connect(config);
       const result = await pool
         .request()
-        .query(`INSERT INTO CURSOS (urlPhoto, nome_cursos, descricao, ID_ALUNO) VALUES ('${curso.urlPhoto}', '${curso.nome_cursos}', '${curso.descricao}', ${curso.ID_ALUNO})`);
+        .query(`INSERT INTO CURSOS (urlPhoto, nome_cursos, descricao, ID_ALUNO) VALUES ('${curso.urlPhoto}', '${curso.nome}', '${curso.descricao}', ${curso.id})`);
 
       res.status(201).send('Curso criado com sucesso');
     } catch (error) {
@@ -47,7 +47,7 @@ class CursosController {
       const pool = await sql.connect(config);
       const result = await pool
         .request()
-        .query(`DELETE FROM CURSOS WHERE id_cursos='${curso.ID_CURSOS}`);
+        .query(`DELETE FROM CURSOS WHERE id_cursos='${curso.id}`);
       res
         .status(201)
         .send('Curso atualizado com sucesso');

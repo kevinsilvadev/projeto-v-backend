@@ -14,7 +14,7 @@ class Aluno {
   //TODO DECLARAR NOS MÈTODOS
   cursos: Array<string>;
 
-  constructor(id: number, nome_completo: string, email: string, senha: string, celular: string, estado: string, cep: string, bairro: string, rua: string, data_nasc: string, empregado: string, area_profissao: string) {
+  constructor(id: number, nome_completo: string, email: string, senha: string, celular: string, estado: string, cep: string, bairro: string, rua: string, data_nasc: string, empregado: string, area_profissao: string, cursos:Array<string>) {
     this.id = id
     this.nome_completo = nome_completo
     this.email = email;
@@ -27,6 +27,7 @@ class Aluno {
     this.data_nasc = data_nasc;
     this.empregado = empregado;
     this.area_profissao = area_profissao;
+    this.cursos = cursos;
   }
 
   static kId = 'ID_ALUNO';
@@ -41,6 +42,7 @@ class Aluno {
   static kDataNascimento = 'data_nasc';
   static kEmpregado = 'empregado';
   static kAreaProfissao = 'area_profissao';
+  static kCursos = "cursos"
 
   static fromMap(reqBody: any): Aluno {
     return new Aluno(
@@ -55,7 +57,8 @@ class Aluno {
       reqBody[Aluno.kRua],
       reqBody[Aluno.kDataNascimento],
       reqBody[Aluno.kEmpregado],
-      reqBody[Aluno.kAreaProfissao]
+      reqBody[Aluno.kAreaProfissao],
+      reqBody[Aluno.kCursos]
     );
   }
 
@@ -73,6 +76,7 @@ class Aluno {
       [Aluno.kDataNascimento]: this.data_nasc,
       [Aluno.kEmpregado]: this.empregado,
       [Aluno.kAreaProfissao]: this.area_profissao,
+      [Aluno.kCursos]: this.cursos
     };
   }
 
