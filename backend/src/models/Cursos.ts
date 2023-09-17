@@ -5,10 +5,10 @@ class Curso {
   descricao: string;
 
 
-  constructor(id: number, urlPhoto: string, nome_cursos: string, descricao: string) {
+  constructor(id: number, urlPhoto: string, nome: string, descricao: string) {
     this.id = id;
     this.urlPhoto = urlPhoto;
-    this.nome = nome_cursos;
+    this.nome = nome;
     this.descricao = descricao;
 
   }

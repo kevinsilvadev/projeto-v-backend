@@ -13,9 +13,8 @@ class CursosController {
         return {
             id: curso.id,
             urlPhoto:curso.urlPhoto,
-            nome_cursos: curso.nome,
-            descricao: curso.descricao,
-            id_aluno: curso.id
+            nome: curso.nome,
+            descricao: curso.descricao
         };
       });
       res.send(alunos);
@@ -32,7 +31,7 @@ class CursosController {
       const pool = await sql.connect(config);
       const result = await pool
         .request()
-        .query(`INSERT INTO CURSOS (urlPhoto, nome_cursos, descricao, ID_ALUNO) VALUES ('${curso.urlPhoto}', '${curso.nome}', '${curso.descricao}', ${curso.id})`);
+        .query(`INSERT INTO CURSOS (urlPhoto, nome, descricao) VALUES ('${curso.urlPhoto}', '${curso.nome}', '${curso.descricao}')`);
 
       res.status(201).send('Curso criado com sucesso');
     } catch (error) {
@@ -74,9 +73,6 @@ class CursosController {
           break;
         case 'descricao':
           query = `UPDATE CURSOS SET descricao = @valor WHERE ID_CURSOS = @id`;
-          break;
-        case 'ID_ALUNO':
-          query = `UPDATE CURSOS SET ID_ALUNO = @valor WHERE ID_CURSOS = @id`;
           break;
         default:
           throw new Error('Campo inválido');

@@ -4,7 +4,7 @@ import { Connection } from 'tedious';
 dotenv.config()
 
 export const config = {  
-    server: 'testedpasc.database.windows.net', 
+    server: 'dpaschoal-teste-server.database.windows.net', 
     authentication: {
         type: 'default',
         options: {
