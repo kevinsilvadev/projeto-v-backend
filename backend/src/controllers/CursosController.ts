@@ -9,7 +9,7 @@ class CursosController {
       const pool = await sql.connect(config);
       const result = await pool.request().query('SELECT * FROM CURSOS');
   
-      const alunos = result.recordset.map((curso: Curso) => {
+      const curso = result.recordset.map((curso: Curso) => {
         return {
             id: curso.id,
             urlPhoto:curso.urlPhoto,
@@ -17,7 +17,7 @@ class CursosController {
             descricao: curso.descricao
         };
       });
-      res.send(alunos);
+      res.send(curso);
     } catch (error) {
       console.log(error);
       res.status(500).send('Erro ao buscar os dados do banco de dados.');

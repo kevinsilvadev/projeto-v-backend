@@ -3,19 +3,19 @@ import sql from 'mssql';
 export const router: Router = Router();
 
 
-import AlunosController from '../controllers/AlunosController';
-const alunosController: AlunosController = new AlunosController();
+import usuarioController from '../controllers/UsuariosController';
+const usuario: usuarioController = new usuarioController();
 
 import CursosController from '../controllers/CursosController';
 const cursosController: CursosController = new CursosController();
 
-//Rota dos alunos
-router.get('/alunos', alunosController.listarAlunos)
-router.get('/alunos/:id', alunosController.acharPeloId)
-router.post('/alunos', alunosController.criarAlunos)
+//Rota dos usurario
+router.get('/usuario', usuario.listarUsuario)
+router.get('/usuario/:id', usuario.findById)
+router.post('/usuario', usuario.criarUsuario)
 
 //Rota de login
-router.post('/login', alunosController.loginAluno)
+router.post('/login', usuario.loginUsuario)
 
 
 //Rota dos cursos
