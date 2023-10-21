@@ -1,0 +1,88 @@
+datasource db {
+    provider = "sqlserver"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+
+model Curso {
+    id Int @id @default(autoincrement())
+    nome String @db.NVarChar(100)
+    descricao  String @db.NVarChar(100)
+    academia Academia @relation(fields:[fk_Academia_id], references:[id], onDelete: NoAction, onUpdate: NoAction) 
+    fk_Academia_id Int 
+    usuario Usuario @relation(fields:[fk_Usuario_id], references:[id], onDelete: NoAction, onUpdate: NoAction)
+    fk_Usuario_id Int
+    telas TelaCurso[]
+    realizados Realiza[]
+}
+
+model Usuario {
+    id Int @id @default(autoincrement())
+    nome String  @db.NVarChar(100)
+    senha String  @db.NVarChar(100)
+    celular String  @db.NVarChar(100)
+    estado  String  @db.NVarChar(100)
+    cep String  @db.NVarChar(100)
+    bairro  String  @db.NVarChar(100)
+    rua String  @db.NVarChar(100)
+    data_nascimento DateTime  
+    colaborador Boolean
+    profissao String  @db.NVarChar(100)
+    academia Academia[]
+    curso Curso[]
+    realizados Realiza[]
+    promotor Promove[] @relation("adm")
+    promovido Promove[] @relation("instrutor")
+
+}
+
+model Academia {
+    id Int @id @default(autoincrement())
+    nome String  @db.NVarChar(100)
+    descricao String  @db.NVarChar(100)
+    imagem String? 
+    cursos Curso[]
+    usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    usuarioId Int @map("fk_Usuario_id")
+    data_criacao DateTime
+}
+
+model TelaCurso{
+    id Int @id @default(autoincrement())
+    texto String
+    midia String
+    resposta String
+    pergunta String
+    curso Curso @relation(fields:[cursoId], references:[id])
+    cursoId Int @map("fk_Curso_id")
+}
+
+model Promove{
+    @@id([admId, instrutorId])
+    adm Usuario @relation("adm", fields: [admId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    admId Int @map("fk_Usuario_id")
+    instrutor Usuario @relation("instrutor", fields: [instrutorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    instrutorId Int @map("fk_Usuario_id_")
+
+}
+
+model Realiza {
+    @@id([usuarioId, cursoId])
+    usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    usuarioId Int @map("fk_Usuario_id")
+    curso Curso @relation(fields:[cursoId], references:[id])
+    cursoId Int @map("fk_Curso_id")
+    questoes_acertadas Int 
+    questoes_erradas Int
+    data_inicio DateTime
+    data_fim DateTime
+}
+
+model Cargo {
+    id Int @id @default(autoincrement())
+    nome String
+}

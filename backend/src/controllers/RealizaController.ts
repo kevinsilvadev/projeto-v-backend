@@ -1,14 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 
-class CursosController {
+class RealizaController {
 
-  async listarCursos(req: Request, res: Response): Promise<void> {
+  async listarCargos(req: Request, res: Response): Promise<void> {
     try {
       const prisma = new PrismaClient();
-      const cursos = await prisma.curso.findMany();
-      res.json(cursos); // Envia a resposta ao cliente
-      console.log(cursos)
+      const realiza = await prisma.realiza.findMany();
+      res.json(realiza); // Envia a resposta ao cliente
+      console.log(realiza)
     } catch (error) {
       console.error('Erro ao listar cursos:', error);
       res.status(500).json({ error: 'Erro ao listar cursos' });
@@ -16,4 +16,4 @@ class CursosController {
   }
 }
 
-export default CursosController;
+export default RealizaController;
