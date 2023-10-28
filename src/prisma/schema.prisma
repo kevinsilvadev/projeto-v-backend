@@ -7,7 +7,6 @@ generator client {
     provider = "prisma-client-js"
 }
 
-
 model Curso {
     id Int @id @default(autoincrement())
     nome String @db.NVarChar(100)
@@ -22,6 +21,7 @@ model Curso {
 
 model Usuario {
     id Int @id @default(autoincrement())
+    email String @db.NVarChar(100) @unique
     nome String  @db.NVarChar(100)
     senha String  @db.NVarChar(100)
     celular String  @db.NVarChar(100)
@@ -32,11 +32,14 @@ model Usuario {
     data_nascimento DateTime  
     colaborador Boolean
     profissao String  @db.NVarChar(100)
+    cargo Cargo @relation(fields: [cargoId], references: [id])
+    cargoId Int @map("fk_Cargo_id")
     academia Academia[]
     curso Curso[]
     realizados Realiza[]
     promotor Promove[] @relation("adm")
     promovido Promove[] @relation("instrutor")
+    tokens AuthenticationToken[]
 
 }
 
@@ -85,4 +88,14 @@ model Realiza {
 model Cargo {
     id Int @id @default(autoincrement())
     nome String
+    usuarios Usuario[]
+}
+
+model AuthenticationToken{
+    id Int @id @default(autoincrement())
+    token String
+    data_criacao DateTime
+    expirado Boolean
+    usuario Usuario @relation(fields:[usuarioId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    usuarioId Int @map("fk_Usuario_id")
 }
