@@ -51,7 +51,7 @@ model Academia {
     cursos Curso[]
     usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: NoAction, onUpdate: NoAction)
     usuarioId Int @map("fk_Usuario_id")
-    data_criacao DateTime
+    data_criacao DateTime @db.DateTime
 }
 
 model TelaCurso{
@@ -99,3 +99,4 @@ model AuthenticationToken{
     usuario Usuario @relation(fields:[usuarioId], references: [id], onDelete: NoAction, onUpdate: NoAction)
     usuarioId Int @map("fk_Usuario_id")
 }
+

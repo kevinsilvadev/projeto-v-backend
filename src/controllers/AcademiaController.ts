@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
+import Academia from '../model/Academia';
 
 class AcademiaController {
 
@@ -12,6 +13,23 @@ class AcademiaController {
     } catch (error) {
       console.error('Erro ao listar Academia:', error);
       res.status(500).json({ error: 'Erro ao listar Academia' });
+    }
+  }
+
+  async criarAcademia(req: Request, res: Response): Promise<void> {
+    const prisma = new PrismaClient();
+    try {
+      const academiaData = req.body; 
+
+      const criarAcademia = await prisma.academia.create({
+        data: academiaData,
+      });
+      res.status(201).json(criarAcademia);
+    } catch (error) {
+      console.error('Erro ao criar academia:', error);
+      res.status(500).json({ error: 'Ocorreu um erro ao criar a academia' });
+    } finally {
+      await prisma.$disconnect(); 
     }
   }
 }

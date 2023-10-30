@@ -27,12 +27,14 @@ const autenticacao:AutenticacaoController = new AutenticacaoController();
 
 //Academia
 router.get('/academias', academiaController.listarAcademia);
+router.post('/academia/registrar', academiaController.criarAcademia);
 
 //Cursos
 router.get('/cursos', cursosController.listarCursos);
 
 //Usuarios
 router.get('/usuarios', usuarioController.listarUsuario);
+router.post('/usuario/registrar', usuarioController.criarUsuario)
 
 //Cargos
 router.get('/cargos', cargoController.listarCargos)
