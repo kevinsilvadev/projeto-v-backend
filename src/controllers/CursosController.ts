@@ -8,7 +8,6 @@ class CursosController {
       const prisma = new PrismaClient();
       const cursos = await prisma.curso.findMany();
       res.json(cursos); // Envia a resposta ao cliente
-      console.log(cursos)
     } catch (error) {
       console.error('Erro ao listar cursos:', error);
       res.status(500).json({ error: 'Erro ao listar cursos' });

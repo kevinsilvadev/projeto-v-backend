@@ -1,6 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
+import { DateTime } from 'mssql';
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const prisma = new PrismaClient();
 
 class AutenticacaoController {
@@ -44,8 +46,8 @@ class AutenticacaoController {
 					cep: cep,
 					bairro: bairro,
 					estado: estado,
-					rua: rua, 
-					celular: celular, 
+					rua: rua,
+					celular: celular,
 					data_nascimento: new Date(dataNascimento),
 					cargoId: 1,
 					senha: bcrypt.hashSync(senha, 12),
@@ -65,23 +67,16 @@ class AutenticacaoController {
 	async login(req: Request, res: Response): Promise<void> {
 		try {
 
-			console.log(req.body.email)
-
 			const usuario = await prisma.usuario.findUnique({
 				where: {
 					email: req.body.email,
 				}
 			});
 
-			console.log(usuario)
-
-
 			if (!usuario) {
 				res.status(403);
 				throw new Error('Dados inválidos.');
 			}
-
-			console.log(usuario.senha);
 
 			const validPassword = await bcrypt.compare(req.body.senha, usuario['senha']);
 			if (!validPassword) {
@@ -89,13 +84,18 @@ class AutenticacaoController {
 				throw new Error('Invalid login credentials.');
 			}
 
-			const jwt = require('jsonwebtoken');
-
-
 			const token = jwt.sign({ userId: usuario.id }, process.env.JWT_ACCESS_SECRET, {
 				expiresIn: '10m',
 			});
 
+			prisma.authenticationToken.create({
+				data:{
+					token: token,
+					expirado: false,
+					data_criacao: new Date(),
+					usuarioId: usuario.id
+				}
+			})
 
 			res.json({ token: token }); // Envia a resposta ao cliente
 		} catch (error) {

@@ -93,7 +93,7 @@ model Cargo {
 
 model AuthenticationToken{
     id Int @id @default(autoincrement())
-    token String
+    token String @unique
     data_criacao DateTime
     expirado Boolean
     usuario Usuario @relation(fields:[usuarioId], references: [id], onDelete: NoAction, onUpdate: NoAction)
