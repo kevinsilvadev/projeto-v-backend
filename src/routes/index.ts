@@ -22,9 +22,9 @@ const promoveController:PromoveController = new PromoveController()
 import TelaCursoControllers from '../controllers/TelaCurso.controller';
 const telaCurso:TelaCursoControllers = new TelaCursoControllers()
 
-import AutenticacaoController from '../controllers/AutenticacaoController';
+/*import AutenticacaoController from '../controllers/AutenticacaoController';
 const autenticacao:AutenticacaoController = new AutenticacaoController();
-
+*/
 //Academia
 router.get('/academias', academiaController.listarAcademia);
 router.post('/academia/registrar', academiaController.criarAcademia);
@@ -49,5 +49,5 @@ router.get('/promove', promoveController.listarPromover)
 router.get('/telacursos', telaCurso.listarTelaCurso)
 
 //Autenticacao
-router.get('/auth/login', autenticacao.login)
-router.get('/auth/registrar', autenticacao.registrar)
+//router.get('/auth/login', autenticacao.login)
+//router.get('/auth/registrar', autenticacao.registrar)

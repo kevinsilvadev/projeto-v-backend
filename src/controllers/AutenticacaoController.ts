@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+/*import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import { DateTime } from 'mssql';
 const bcrypt = require('bcrypt');
@@ -106,3 +106,4 @@ class AutenticacaoController {
 }
 
 export default AutenticacaoController;
+*/
