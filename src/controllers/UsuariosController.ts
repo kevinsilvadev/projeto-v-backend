@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import Usuario from '../model/Usuario';
+import{hash } from 'bcrypt';
 
 
 class UsuariosControllers {
@@ -14,24 +15,6 @@ class UsuariosControllers {
       res.status(500).json({ error: 'Erro ao listar usuarios' });
     }
   }
-
-  async criarUsuario(req: Request, res: Response): Promise<void> {
-    const prisma = new PrismaClient();
-    try {
-      const usuarioData = req.body;
-
-      const criarusuario = await prisma.usuario.create({
-        data: usuarioData,
-      });
-      res.status(201).json(criarusuario);
-    } catch (error) {
-      console.error('Erro ao criar usuario:', error);
-      res.status(500).json({ error: 'Ocorreu um erro ao criar a usuario' });
-    } finally {
-      await prisma.$disconnect();
-    }
-  }
-
 
   async deletarUsuario(req: Request, res: Response): Promise<void> {
     const prisma = new PrismaClient();
@@ -64,6 +47,63 @@ class UsuariosControllers {
   }
 */
 
+
+async registrar(req: Request, res: Response): Promise<void> {
+  const prisma = new PrismaClient();
+  try {
+    const {
+      dataNascimento,
+      celular,
+      senha,
+      nome,
+      colaborador,
+      profissao,
+      email,
+      cep,
+      bairro,
+      estado,
+      rua } = req.body;
+
+    if (!email || !senha) {
+      res.status(400);
+      throw new Error('Email ou senha vazio.');
+    }
+
+    const usuario = await prisma.usuario.findUnique({
+      where: {
+        email: email,
+      }
+    });
+
+    if (usuario) {
+      res.status(400);
+      throw new Error('Email já está sendo utilizado.');
+    }
+
+    await prisma.usuario.create({
+      data: {
+        nome: nome,
+        colaborador: colaborador,
+        profissao: profissao,
+        cep: cep,
+        bairro: bairro,
+        estado: estado,
+        rua: rua,
+        celular: celular,
+        data_nascimento: new Date(dataNascimento),
+        cargoId: 1,
+        senha: await hash(senha, 12),
+        email: email,
+      }
+    })
+
+    res.status(200);
+
+  } catch (error) {
+    console.error('Erro ao criar conta', error);
+    res.status(500).json({ error: 'Erro ao realizar criar conta' });
+  }
+}
 
   async findById(req: Request, res: Response) {
     const prisma = new PrismaClient();
