@@ -20,7 +20,7 @@ model Curso {
 }
 
 model Usuario {
-    id Int @id @default(autoincrement())
+    id Int @id @default(autoincrement()) 
     email String @db.NVarChar(100) @unique
     nome String  @db.NVarChar(100)
     senha String  @db.NVarChar(100)

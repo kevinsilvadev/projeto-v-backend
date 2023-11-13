@@ -32,9 +32,6 @@ class UsuariosControllers {
     }
   }
 
-  
-
-
 /*  async atualizarUsuario(req: Request, res: Response, userId:Number, newData:Usuario): Promise<void> {
     const prisma = new PrismaClient();
     const updatedUser = await prisma.usuario.update({
@@ -46,7 +43,6 @@ class UsuariosControllers {
     return updatedUser;
   }
 */
-
 
 async registrar(req: Request, res: Response): Promise<void> {
   const prisma = new PrismaClient();
@@ -109,6 +105,7 @@ async registrar(req: Request, res: Response): Promise<void> {
     const prisma = new PrismaClient();
     const usuario = Usuario.fromMap(req.body)
     try {
+      console.log(usuario)
       const user = await prisma.usuario.findUnique({
         where: {
           id: usuario.id,
@@ -119,7 +116,6 @@ async registrar(req: Request, res: Response): Promise<void> {
       throw new Error(`Erro ao encontrar o usuário: ${error}`);
     }
   }
-
 }
 
 export default UsuariosControllers;
