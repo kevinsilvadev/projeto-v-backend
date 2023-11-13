@@ -53,7 +53,9 @@ class AutenticacaoController {
         senha,
         ...teste
       } = usuario;
-      res.json({ token: token, usuario: teste,cargo: cargo }); // Envia a resposta ao cliente
+      
+      const teste2 = {...teste, cargo: cargo?.nome}
+      res.json({ token: token, usuario: teste2 }); // Envia a resposta ao cliente
     } catch (error) {
       console.error('Erro ao realizar login', error);
       res.status(500).json({ error: 'Erro ao realizar login' });
