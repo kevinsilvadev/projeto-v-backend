@@ -93,7 +93,7 @@ async registrar(req: Request, res: Response): Promise<void> {
       }
     })
 
-    res.status(200);
+    res.status(201);
 
   } catch (error) {
     console.error('Erro ao criar conta', error);
@@ -111,6 +111,7 @@ async registrar(req: Request, res: Response): Promise<void> {
           id: usuario.id,
         },
       });
+      res.status(200).json({user})
       return user;
     } catch (error) {
       throw new Error(`Erro ao encontrar o usuário: ${error}`);

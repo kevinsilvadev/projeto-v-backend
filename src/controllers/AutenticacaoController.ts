@@ -7,8 +7,6 @@ const prisma = new PrismaClient();
 
 class AutenticacaoController {
 
-
-
   async login(req: Request, res: Response): Promise<void> {
     try {
 
