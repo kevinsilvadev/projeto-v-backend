@@ -43,7 +43,17 @@ class AutenticacaoController {
         }
       })
 
-      res.json({ token: token, usuarioTipo: usuario.cargoId }); // Envia a resposta ao cliente
+      const cargo = await prisma.cargo.findUnique({
+        where: {
+          id: usuario.cargoId,
+        }
+      });
+
+      const {
+        senha,
+        ...teste
+      } = usuario;
+      res.json({ token: token, usuario: teste,cargo: cargo }); // Envia a resposta ao cliente
     } catch (error) {
       console.error('Erro ao realizar login', error);
       res.status(500).json({ error: 'Erro ao realizar login' });
