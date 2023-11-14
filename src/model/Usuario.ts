@@ -9,11 +9,11 @@ class Usuario {
     bairro: string;
     rua: string;
     data_nascimento: Date;
-    colaborador: Number;
+    colaborador: boolean;
     profissao: string;
     cargo: Number
   
-    constructor(id: number, nome: string, email: string, senha: string, celular: string, estado: string, cep: string, bairro: string, rua: string, data_nascimento: Date, colaborador: Number, profissao: string, cargo: Number) {
+    constructor(id: number, nome: string, email: string, senha: string, celular: string, estado: string, cep: string, bairro: string, rua: string, data_nascimento: Date, colaborador: boolean, profissao: string, cargo: Number) {
       this.id = id
       this.nome = nome
       this.email = email;

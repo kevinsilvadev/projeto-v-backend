@@ -33,7 +33,7 @@ model Usuario {
     colaborador Boolean
     profissao String  @db.NVarChar(100)
     cargo Cargo @relation(fields: [cargoId], references: [id])
-    cargoId Int @map("fk_Cargo_id")
+    cargoId Int @map("fk_Cargo_id") 
     academia Academia[]
     curso Curso[]
     realizados Realiza[]

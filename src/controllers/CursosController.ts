@@ -13,6 +13,8 @@ class CursosController {
       res.status(500).json({ error: 'Erro ao listar cursos' });
     }
   }
+
+
 }
 
 export default CursosController;
