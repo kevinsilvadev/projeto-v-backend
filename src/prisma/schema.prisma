@@ -1,6 +1,6 @@
 datasource db {
     provider = "sqlserver"
-    url      = "sqlserver://dpaschoal-teste-server.database.windows.net:1433;database=dpaschoal_teste;user=teste;password=123@qwer;encrypt=true"
+    url      = "sqlserver://dpaschoal-teste.database.windows.net:1433;database=dpaschoal-teste;user=teste;password=123@qwer;encrypt=true"
 }
 
 generator client {
@@ -11,27 +11,14 @@ model Curso {
   id               Int        @id @default(autoincrement())
   titulo           String
   descricao        String     @db.Text
-  academia         Academia   @relation(fields: [fk_Academia_id], references: [id])
-  fk_Academia_id   Int
-  usuario          Usuario    @relation(fields: [fk_Usuario_id], references: [id])
-  fk_Usuario_id    Int
-  telas            TelaCurso[] // Confirme se TelaCurso é a entidade correta
-  realizados       Realiza[]  // Confirme a estrutura da entidade Realiza
+  academia         Academia   @relation(fields: [academiaId], references: [id])
+  academiaId       Int @map("fk_Academia_id")
+  usuario          Usuario    @relation(fields: [usuarioId], references: [id])
+  usuarioId        Int @map("fk_Usuario_id")
+  telas            TelaCurso[] 
+  realiza          Realiza[]
   data_criacao     DateTime   @default(now())
-  capa             String
-  listaDeSlides    Slide[]    // Confirme se Slide é a entidade correta
-}
-
-model Slide {
-  id            Int      @id @default(autoincrement())
-  slideType     String
-  midia         String?
-  question      String?
-  options       String? //Está puxando a lista em uma unica string, para exibir na tela deve-se utitlizar json.parse() para transformar em lista novamente.
-  correctOption String?
-  points        Int?
-  curso         Curso?    @relation(fields: [cursoId], references: [id])
-  cursoId       Int?
+  imagem           String   
 }
 
 model Usuario {
@@ -45,7 +32,7 @@ model Usuario {
     bairro  String  @db.NVarChar(100)
     rua String  @db.NVarChar(100)
     data_nascimento DateTime  
-    colaborador Boolean
+    colaborador Boolean @default(false)
     profissao String  @db.NVarChar(100)
     cargo Cargo @relation(fields: [cargoId], references: [id])
     cargoId Int @map("fk_Cargo_id")
@@ -71,9 +58,9 @@ model Academia {
 model TelaCurso{
     id Int @id @default(autoincrement())
     texto String
-    midia String
-    resposta String
-    pergunta String
+    midia String?
+    resposta String?
+    pergunta String?
     curso Curso @relation(fields:[cursoId], references:[id])
     cursoId Int @map("fk_Curso_id")
 }

@@ -45,8 +45,10 @@ class UsuariosControllers {
 */
 
 async registrar(req: Request, res: Response): Promise<void> {
-  const prisma = new PrismaClient();
+  
   try {
+    const prisma = new PrismaClient();
+
     const {
       dataNascimento,
       celular,
@@ -71,7 +73,8 @@ async registrar(req: Request, res: Response): Promise<void> {
       }
     });
 
-    if (usuario?.email == email) {
+    if (usuario !== null) {
+      
       res.status(400);
       throw new Error('Email já está sendo utilizado.');
     }
@@ -79,7 +82,7 @@ async registrar(req: Request, res: Response): Promise<void> {
     await prisma.usuario.create({
       data: {
         nome: nome,
-        colaborador: colaborador === "true",
+        colaborador: colaborador,
         profissao: profissao,
         cep: cep,
         bairro: bairro,
@@ -93,6 +96,8 @@ async registrar(req: Request, res: Response): Promise<void> {
       }})
   
     res.status(201).json({sucesso: 'Conta criada com sucesso!'});
+
+    await prisma.$disconnect();
 
  } catch (error) {
     console.error('Erro ao criar conta', error);
@@ -110,7 +115,7 @@ async findById(req: Request, res: Response) {
       },
     });
     res.status(200).json({user})
-    return user;
+    await prisma.$disconnect();
   } catch (error) {
     throw new Error(`Erro ao encontrar o usuário: ${error}`);
   }

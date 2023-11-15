@@ -7,6 +7,8 @@ import auth from '../config/auth';
 export default function isAutenticado(request: Request, response:Response, next: NextFunction) {
     const authHeader = request.headers.authorization;
 
+    console.log(authHeader)
+
     if (!authHeader) {
         return response.status(401).json({ message: 'Token não fornecido' });
     }

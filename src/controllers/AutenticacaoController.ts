@@ -3,12 +3,13 @@ import { Request, Response } from 'express';
 import { compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import authConfig from '../config/auth';
-const prisma = new PrismaClient();
+
 
 class AutenticacaoController {
 
   async login(req: Request, res: Response): Promise<void> {
     try {
+      const prisma = new PrismaClient();
 
       const usuario = await prisma.usuario.findUnique({
         where: {
@@ -32,15 +33,6 @@ class AutenticacaoController {
         expiresIn: authConfig.jwt.expiresIn,
       });
 
-      await prisma.authenticationToken.create({
-        data: {
-          token: token,
-          expirado: false,
-          data_criacao: new Date(),
-          usuarioId: usuario.id,
-        }
-      })
-
       const cargo = await prisma.cargo.findUnique({
         where: {
           id: usuario.cargoId,
@@ -53,7 +45,8 @@ class AutenticacaoController {
       } = usuario;
       
       const teste2 = {...teste, cargo: cargo?.nome}
-      res.json({ token: token, usuario: teste2 }); // Envia a resposta ao cliente
+      res.json({ token: token, usuario: teste2 });
+      prisma.$disconnect();
     } catch (error) {
       console.error('Erro ao realizar login', error);
       res.status(500).json({ error: 'Erro ao realizar login' });

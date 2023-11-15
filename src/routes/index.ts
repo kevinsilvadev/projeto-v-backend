@@ -10,7 +10,7 @@ import { promoveRouter } from './promove.routes';
 
 export const router: Router = Router();
 
-//router.use('/auth', authRouter);
+router.use('/auth', authRouter);
 router.use('/usuarios', usuariosRouter);
 router.use('/telaCurso', telaCursoRouter);
 router.use('/cursos', cursosRouter);
