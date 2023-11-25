@@ -8,3 +8,5 @@ usuariosRouter.get('/findById/:id', usuarioController.findById)
 usuariosRouter.get('', usuarioController.listarUsuario);
 usuariosRouter.post('/registrar', usuarioController.registrar);
 usuariosRouter.delete('/deletar/:id', usuarioController.deletarUsuario)
+usuariosRouter.put('/atualizar/:id', usuarioController.atualizarUsuario);
+usuariosRouter.put('/promover/', usuarioController.promoverUsuario);

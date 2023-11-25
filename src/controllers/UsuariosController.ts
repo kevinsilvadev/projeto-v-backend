@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import Usuario from '../model/Usuario';
 import{hash } from 'bcrypt';
@@ -10,6 +10,7 @@ class UsuariosControllers {
       const prisma = new PrismaClient();
       const usuarios = await prisma.usuario.findMany();
       res.json(usuarios); // Envia a resposta ao cliente
+      await prisma.$disconnect();
     } catch (error) {
       console.error('Erro ao listar usuarios:', error);
       res.status(500).json({ error: 'Erro ao listar usuarios' });
@@ -32,17 +33,64 @@ class UsuariosControllers {
     }
   }
 
-/*  async atualizarUsuario(req: Request, res: Response, userId:Number, newData:Usuario): Promise<void> {
+  async promoverUsuario(req: Request, res: Response): Promise<void> {
+    const prisma = new PrismaClient();
+
+    const {id, cargoId} = req.body;
+
+    console.log(id)
+    console.log(cargoId)
+
+
+    await prisma.usuario.update({
+      where:{
+        id: parseInt(id, 10)
+      },
+      data: {
+        cargoId: parseInt(cargoId, 10)
+      }
+    })
+    res.status(200).json({status: "Usuario promovido com sucesso!"})
+
+    await prisma.$disconnect();
+  }
+
+  async atualizarUsuario(req: Request, res: Response, ): Promise<void> {
+    const {
+      celular,
+      senha,
+      nome,
+      colaborador,
+      profissao,
+      email,
+      cep,
+      bairro,
+      estado,
+      rua } = req.body;
+
+    const id = req.params.id;
     const prisma = new PrismaClient();
     const updatedUser = await prisma.usuario.update({
       where: {
-        id: userId, // Substitua 'id' pelo campo exclusivo que você está usando
+        id: parseInt(id, 10),
       },
-      data: newData, // Os novos dados que você deseja atualizar
+      data: {
+        celular:celular,
+        senha: senha,
+        nome:nome,
+        colaborador: colaborador,
+        profissao: profissao,
+        email: email,
+        cep: cep,
+        bairro: bairro,
+        estado: estado,
+        rua: rua,
+      },
     });
-    return updatedUser;
+    res.status(200).json(updatedUser);
+    await prisma.$disconnect();
   }
-*/
+
 
 async registrar(req: Request, res: Response): Promise<void> {
   
