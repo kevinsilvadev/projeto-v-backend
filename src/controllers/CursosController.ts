@@ -22,7 +22,6 @@ class CursosController {
       const prisma = new PrismaClient();
 
       const {
-        id,
         descricao,
         usuarioId,
         academiaId,
@@ -30,24 +29,32 @@ class CursosController {
         imagem,
         telasCursoJson,
       } = req.body;
-  
-      const telasCurso = telasCursoJson.map((tela: any) => (
-          TelaCurso.fromMap(
-            tela
-          )
-       ));
+
+      const telas = JSON.parse(telasCursoJson)
+
+      const academia = await prisma.academia.findFirst(
+        {
+          where: {
+            nome: academiaId
+          }
+        }
+      );
+
+      if(academia === null){
+        return;
+      }
   
       const criarCurso = await prisma.curso.create({
         data: {
-          id: id,
           descricao: descricao,
           usuarioId: usuarioId,
           data_criacao: new Date(),
-          academiaId: academiaId,
+          academiaId: academia?.id,
           titulo: titulo,
-          imagem: imagem,
-          telas:{
-            create: telasCurso
+          imagem: 'imagem',                                                         
+          validado: false,                                              
+          telas: {
+            create: telas           
           }
         }
       });
