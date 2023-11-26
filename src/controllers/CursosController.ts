@@ -30,7 +30,16 @@ class CursosController {
         telasCursoJson,
       } = req.body;
 
-      const telas = JSON.parse(telasCursoJson)
+      console.log(telasCursoJson)
+
+      const telasJson = JSON.parse(telasCursoJson)
+
+      let telas: TelaCurso[] = [];
+
+      for(const tela of telasJson){
+        delete tela['id']
+        telas.push(TelaCurso.fromMap(tela));
+      }
 
       const academia = await prisma.academia.findFirst(
         {
@@ -54,7 +63,7 @@ class CursosController {
           imagem: 'imagem',                                                         
           validado: false,                                              
           telas: {
-            create: telas           
+            create: JSON.parse(JSON.stringify(telas))
           }
         }
       });

@@ -9,7 +9,6 @@ class AcademiaController {
       const prisma = new PrismaClient();
       const academia = await prisma.academia.findMany();
       res.status(201).json(academia); 
-      console.log(academia)
       await prisma.$disconnect();
     } catch (error) {
       console.error('Erro ao listar Academia:', error);

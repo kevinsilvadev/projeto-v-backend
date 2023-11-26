@@ -1,31 +1,46 @@
 class TelaCurso{
-    id: number;
+    
     texto: string;
     midia: string | undefined;
     resposta: string | undefined;
-    pergunta: string | undefined;
+    alternativas: string | undefined;
+    posicao: number;
+    feedbacks: string;
+    tipo: string;
 
-    constructor(id: number, texto:string, midia:string|undefined, pergunta:string|undefined, resposta:string|undefined){
-        this.id = id;
+    constructor(texto:string, midia:string|undefined, pergunta:string|undefined, resposta:string|undefined,   posicao: number, feedbacks: string, tipo: string){
+        
         this.texto = texto;
         this.midia = midia;
         this.resposta = resposta;
-        this.pergunta = pergunta;
+        this.alternativas = pergunta;
+        this.posicao = posicao;
+        this.feedbacks = feedbacks;
+        this.tipo = tipo;
     }
 
-    static kId = "id";
     static kTexto = "texto";
     static kMidia = "midia";
     static kResposta = "resposta";
-    static kPergunta = "pergunta";
+    static kAlternativas = "alternativas";
+    static kPosicao = "posicao"; 
+    static kFeedbacks= "feedbacks";
+    static kTipo= "tipo";
 
     static fromMap(reqBody: any){
+        const respostas = reqBody[TelaCurso.kResposta];
+        const alternativas = reqBody[TelaCurso.kAlternativas]
+        const feedbacks = reqBody[TelaCurso.kFeedbacks];
+        console.log(reqBody[TelaCurso.kPosicao])
+
         return new TelaCurso(
-            reqBody[TelaCurso.kId],
             reqBody[TelaCurso.kTexto],
             reqBody[TelaCurso.kMidia],
-            reqBody[TelaCurso.kPergunta],
-            reqBody[TelaCurso.kResposta]
+            alternativas.join(' '),
+            respostas.join(' '),
+            reqBody[TelaCurso.kPosicao],
+            feedbacks.join(' '),
+            reqBody[TelaCurso.kTipo],
         );
     }
 
