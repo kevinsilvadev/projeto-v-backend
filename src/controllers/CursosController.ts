@@ -54,5 +54,4 @@ class CursosController {
 }
 
 
-
 export default CursosController;
