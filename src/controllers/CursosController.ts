@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import TelaCurso from '../model/TelaCurso';
 
 class CursosController {
 
@@ -8,74 +7,52 @@ class CursosController {
     try {
       const prisma = new PrismaClient();
       const cursos = await prisma.curso.findMany();
-      res.json(cursos);
-      await prisma.$disconnect();
+      res.json(cursos); // Envia a resposta ao cliente
     } catch (error) {
       console.error('Erro ao listar cursos:', error);
       res.status(500).json({ error: 'Erro ao listar cursos' });
     }
   }
-
-  async criarCurso(req: Request, res: Response): Promise<void> {    
+  async criarCurso(req: Request, res: Response): Promise<void> {
+    const prisma = new PrismaClient();
     try {
+      const cursoData = req.body; 
 
-      const prisma = new PrismaClient();
-
-      const {
-        descricao,
-        usuarioId,
-        academiaId,
-        titulo,
-        imagem,
-        telasCursoJson,
-      } = req.body;
-
-      console.log(telasCursoJson)
-
-      const telasJson = JSON.parse(telasCursoJson)
-
-      let telas: TelaCurso[] = [];
-
-      for(const tela of telasJson){
-        delete tela['id']
-        telas.push(TelaCurso.fromMap(tela));
-      }
-
-      const academia = await prisma.academia.findFirst(
-        {
-          where: {
-            nome: academiaId
-          }
-        }
-      );
-
-      if(academia === null){
-        return;
-      }
-  
-      const criarCurso = await prisma.curso.create({
-        data: {
-          descricao: descricao,
-          usuarioId: usuarioId,
-          data_criacao: new Date(),
-          academiaId: academia?.id,
-          titulo: titulo,
-          imagem: 'imagem',                                                         
-          validado: false,                                              
-          telas: {
-            create: JSON.parse(JSON.stringify(telas))
-          }
-        }
+      const criarcurso = await prisma.curso.create({
+        data: cursoData,
       });
-  
-      res.status(201).json(criarCurso);
-
-      await prisma.$disconnect();
+      res.status(201).json(criarcurso);
     } catch (error) {
       console.error('Erro ao criar curso:', error);
-      res.status(500).json({ error: 'Ocorreu um erro ao criar o curso' });
+      res.status(500).json({ error: 'Ocorreu um erro ao criar a curso' });
+    } finally {
+      await prisma.$disconnect(); 
+    }
+  }
+
+
+  async updateCursosPendentes(req: Request, res: Response): Promise<void> {
+    try {
+      const cursoData = req.body; 
+      const prisma = new PrismaClient();
+      const updateCursosPendentes = await prisma.curso.update({
+        where: {
+          id: cursoData.id
+        },
+        data: {
+          validado: cursoData.data.validado
+        }
+      })
+      console.log(cursoData.validado)
+      console.log(cursoData.data)
+      res.json(updateCursosPendentes);
+    } catch (error) {
+      console.error('Erro ao listar cursos:', error);
+      res.status(500).json({ error: 'Erro ao listar cursos' });
     }
   }
 }
+
+
 
 export default CursosController;

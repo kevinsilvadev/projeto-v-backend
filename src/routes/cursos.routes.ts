@@ -6,3 +6,4 @@ const cursosController: CursosController = new CursosController();
 
 cursosRouter.get('', cursosController.listarCursos);
 cursosRouter.post('/criar', cursosController.criarCurso);
+cursosRouter.patch('/update', cursosController.updateCursosPendentes);
