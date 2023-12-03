@@ -68,7 +68,6 @@ class CursosController {
     }
   }
 
-
   async validarCurso(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params.id;
@@ -87,6 +86,5 @@ class CursosController {
     }
   }
 }
-
 
 export default CursosController;
