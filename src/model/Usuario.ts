@@ -11,7 +11,7 @@ class Usuario {
     data_nascimento: Date;
     colaborador: boolean;
     profissao: string;
-    cargo: Number
+    cargo: Number;
   
     constructor(id: number, nome: string, email: string, senha: string, celular: string, estado: string, cep: string, bairro: string, rua: string, data_nascimento: Date, colaborador: boolean, profissao: string, cargo: Number) {
       this.id = id
@@ -38,10 +38,10 @@ class Usuario {
     static kCep = 'cep';
     static kBairro = 'bairro';
     static kRua = 'rua';
-    static kDataNascimento = 'data_nasc';
-    static kColaborador = 'cargo';
-    static kProfissao = 'kProfissao';
-    static kCargo = 'cargo'
+    static kDataNascimento = 'data_nascimento';
+    static kColaborador = 'colaborador';
+    static kProfissao = 'profissao';
+    static kCargo = 'fk_Cargo_id'
   
     static fromMap(reqBody: any): Usuario {
       return new Usuario(
@@ -75,7 +75,7 @@ class Usuario {
         [Usuario.kDataNascimento]: this.data_nascimento,
         [Usuario.kColaborador]: this.colaborador,
         [Usuario.kProfissao]: this.profissao,
-        [Usuario.kCargo]: this.cargo
+        ['cargo']: this.cargo
       };
     }
   

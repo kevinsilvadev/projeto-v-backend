@@ -1,22 +1,66 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import Academia from '../model/Academia';
+import {config} from '../config/db';
+import sql, { pool } from 'mssql';
 
 class AcademiaController {
 
   async listarAcademia(req: Request, res: Response): Promise<void> {
     try {
-      const prisma = new PrismaClient();
-      const academia = await prisma.academia.findMany();
-      res.status(201).json(academia); 
-      await prisma.$disconnect();
+      const pool = await sql.connect(config);
+      const result = await pool.request().query('SELECT * FROM Academia');
+      
+      const academias: Academia[] = [];
+
+      result.recordset.forEach(element => {
+        academias.push(Academia.fromMap(element))
+      })
+
+
+      res.json(academias);
+
+      await pool.close();
+      
     } catch (error) {
-      console.error('Erro ao listar Academia:', error);
-      res.status(500).json({ error: 'Erro ao listar Academia' });
+      console.error('Erro ao listar usuarios:', error);
+      res.status(500).json({ error: 'Erro ao listar usuarios' });
     }
   }
 
   async criarAcademia(req: Request, res: Response): Promise<void> {
+    try {
+      const academia = Academia.fromMap(req.body);
+      const pool = await sql.connect(config);
+      const dataCriacao = new Date().toISOString();
+      const result = await pool
+        .request()
+        .query(
+        `INSERT INTO ACADEMIA (
+          descricao, 
+          nome, 
+          imagem, 
+          fk_Usuario_id, 
+          data_criacao) 
+          VALUES 
+          (
+            '${academia.descricao}', 
+            '${academia.nome}', 
+            '${academia.imagem}', 
+            ${academia.fk_Usuario_id}, 
+            '${dataCriacao}')`);
+      res
+        .status(201)
+        .send('Academia criado com sucesso');
+    } catch (error) {
+      res.status(500).send('Erro ao criar o academia');
+      console.log(error);
+    }
+
+  }
+
+
+  /*async criarAcademia(req: Request, res: Response): Promise<void> {
     const prisma = new PrismaClient();
     try {
       const { descricao, nome, imagem, usuarioId } = req.body;
@@ -37,7 +81,9 @@ class AcademiaController {
     } finally {
       await prisma.$disconnect();
     }
-  }
+  }*/
+
+
 }
 
 export default AcademiaController;
