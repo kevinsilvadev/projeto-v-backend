@@ -5,3 +5,4 @@ export const telaCursoRouter: Router = Router();
 
 
 telaCursoRouter.get('', telaCurso.listarTelaCurso)
+telaCursoRouter.post('/criar', telaCurso.criarTelaCurso)

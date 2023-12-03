@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import sql, { pool } from 'mssql';
 import {config} from '../config/db';
+import Curso from '../model/Curso';
 
 
 
@@ -26,6 +27,12 @@ class TelaCursoControllers {
 
       const cursoData = req.body;
 
+      cursoData.array.forEach(element => {
+        const curso = Curso.fromMap(element)
+
+        console.log(element)
+      });
+      
       const result = await pool.request().query(`
         INSERT INTO TelaCurso (
           texto,
@@ -43,8 +50,7 @@ class TelaCursoControllers {
           ${cursoData.cursoID}
         )
       `);
-      
-      res.json(result); // Envia a resposta ao cliente
+      res.json(result); 
     } catch (error) {
       console.error('Erro ao listar telaCursos:', error);
       res.status(500).json({ error: 'Erro ao listar telaCursos' });
