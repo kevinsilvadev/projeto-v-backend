@@ -10,15 +10,11 @@ class CursosController {
       const pool = await sql.connect(config);
       const result = await pool.request().query("SELECT * FROM Curso");
   
-      // Verifica se há dados no recordset
       const cursos: Curso[] = [];
 
       result.recordset.forEach(element => {
         cursos.push(Curso.fromMap(element))
       });
-
-      console.log(cursos)
-
   
       if (cursos.length > 0) {
         res.json(cursos);

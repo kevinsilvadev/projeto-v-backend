@@ -19,7 +19,7 @@ class Curso {
     }
   
     static kId = 'id';
-    static kfk_Usuario_Id = 'fk_Usuario_Id';
+    static kfk_Usuario_Id = 'fk_Usuario_id';
     static kdescricao = 'descricao';
     static kdata_criacao = 'data_criacao';
     static kfk_Academia_id = 'fk_Academia_id'
@@ -30,8 +30,8 @@ class Curso {
     static fromMap(reqBody: any): Curso {
       return new Curso(
         reqBody[Curso.kId],
-        reqBody[Curso.kfk_Usuario_Id],
         reqBody[Curso.kdescricao],
+        reqBody[Curso.kfk_Usuario_Id],
         reqBody[Curso.kdata_criacao],
         reqBody[Curso.kfk_Academia_id],
         reqBody[Curso.kimagem],
