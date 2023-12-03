@@ -4,7 +4,7 @@ class Academia {
   descricao: string;
   imagem: string;
   data_criacao: Date;
-  fk_Usuario_id: Number;
+  fk_Usuario_id: number;
 
   constructor(
     id: number,
@@ -12,14 +12,14 @@ class Academia {
     descricao: string,
     imagem: string,
     data_criacao: Date,
-    fk_Usuario_Id: Number
+    fk_Usuario_id: number
   ) {
     this.id = id;
     this.nome = nome;
     this.descricao = descricao;
     this.imagem = imagem;
     this.data_criacao = data_criacao;
-    this.fk_Usuario_id = fk_Usuario_Id;
+    this.fk_Usuario_id = fk_Usuario_id;
   }
 
   static kId = "id";
@@ -36,7 +36,7 @@ class Academia {
       reqBody[Academia.kdescricao],
       reqBody[Academia.kimagem],
       reqBody[Academia.kdata_criacao],
-      reqBody[Academia.kfk_Usuario_id]
+      reqBody["usuarioId"]
     );
   }
 
