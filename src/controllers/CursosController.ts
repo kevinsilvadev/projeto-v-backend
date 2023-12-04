@@ -39,8 +39,8 @@ class CursosController {
         cursoData.imagem
       );
 
-      const result = await pool.request().query(
-        `INSERT INTO Curso (
+      const result = await pool.request().query(`
+      INSERT INTO Curso (
         descricao, 
         fk_Usuario_id, 
         data_criacao, 
@@ -49,6 +49,7 @@ class CursosController {
         validado, 
         titulo
       )
+      OUTPUT INSERTED.id, INSERTED.descricao, INSERTED.fk_Usuario_id, INSERTED.data_criacao, INSERTED.fk_Academia_id, INSERTED.imagem, INSERTED.validado, INSERTED.titulo
       VALUES (
         '${cursoData.descricao}',
         ${cursoData.usuarioId},
@@ -57,11 +58,12 @@ class CursosController {
         '${imgUrl}',          
         0,
         '${cursoData.titulo}'
-      )`
-      );
+      )
+    `);
 
-      console.log(result);
-      res.status(201).send("Curso criado com sucesso");
+      console.log("result: ", result);
+      console.log("recordset[0]: ", result.recordset[0]);
+      res.status(201).send(result.recordset[0]);
     } catch (error) {
       res.status(500).send("Erro ao criar o Curso");
       console.log(error);
