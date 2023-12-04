@@ -21,6 +21,33 @@ class TelaCursoControllers {
     }
   }
 
+  async listarSlidePorId(req: Request, res: Response): Promise<void> {
+    try {
+      const pool = await sql.connect(config);
+      const fk_Curso_id = req.params.id
+      const result = await pool
+        .request()
+        .query(
+          `SELECT * FROM TelaCurso where fk_Curso_id = ${fk_Curso_id}`
+        );
+
+      const recordset = result.recordsets as TelaCurso[][];
+
+      // Verifica se há dados no recordset
+      const telaCurso = recordset.length > 0 ? recordset[0] : [];
+
+      if (telaCurso.length > 0) {
+        res.json(telaCurso);
+      } else {
+        res.status(404).json({ message: "Nenhuma telaCurso encontrada" });
+      }
+
+    } catch (error) {
+      console.error("Erro ao listar telaCursos:", error);
+      res.status(500).json({ error: "Erro ao listar telaCursos" });
+    }
+  }
+
   async criarTelaCurso(req: Request, res: Response): Promise<void> {
     try {
       const cursoId = req.body.cursoId;
@@ -30,7 +57,7 @@ class TelaCursoControllers {
       const insertPromises = slidesData.map(async (element: TelaCurso) => {
         console.log("element: ", element);
         let imgUrl;
-        if (element.midia){
+        if (element.midia) {
           imgUrl = await salvarImagem(
             `${element.posicao}-base64`,
             element.midia
@@ -70,7 +97,7 @@ class TelaCursoControllers {
     } catch (error) {
       console.error("Erro ao listar telaCursos:", error);
       res.status(500).json({ error: "Erro ao listar telaCursos" });
-    } 
+    }
   }
 
   async deletarTelaCurso(req: Request, res: Response): Promise<void> {}
