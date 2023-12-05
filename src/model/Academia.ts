@@ -4,7 +4,7 @@ class Academia {
   descricao: string;
   imagem: string;
   data_criacao: Date;
-  fk_Usuario_id: number;
+  usuarioId: number;
 
   constructor(
     id: number,
@@ -12,14 +12,14 @@ class Academia {
     descricao: string,
     imagem: string,
     data_criacao: Date,
-    fk_Usuario_id: number
+    usuarioId: number
   ) {
     this.id = id;
     this.nome = nome;
     this.descricao = descricao;
     this.imagem = imagem;
     this.data_criacao = data_criacao;
-    this.fk_Usuario_id = fk_Usuario_id;
+    this.usuarioId = usuarioId;
   }
 
   static kId = "id";
@@ -27,7 +27,7 @@ class Academia {
   static kdescricao = "descricao";
   static kimagem = "imagem";
   static kdata_criacao = "data_criacao";
-  static kfk_Usuario_id = "fk_Usuario_id";
+  static kusuarioId = "usuarioId";
 
   static fromMap(reqBody: any): Academia {
     return new Academia(
@@ -47,7 +47,7 @@ class Academia {
       [Academia.kdescricao]: this.descricao,
       [Academia.kimagem]: this.imagem,
       [Academia.kdata_criacao]: this.data_criacao,
-      [Academia.kfk_Usuario_id]: this.fk_Usuario_id,
+      [Academia.kusuarioId]: this.usuarioId,
     };
   }
 

@@ -55,7 +55,7 @@ class UsuariosControllers {
 
     const result = await pool
       .request()
-      .query(`UPDATE Usuario SET fk_Cargo_id = ${cargoId} WHERE id = ${id}`);
+      .query(`UPDATE Usuario SET cargoId = ${cargoId} WHERE id = ${id}`);
 
     res.status(200).json(result);
 
@@ -113,11 +113,11 @@ class UsuariosControllers {
         res.status(400);
         throw new Error("Email ou senha vazio.");
       }
-      console.log(email)
+
       const usuario = await pool.request().query(`SELECT * FROM Usuario WHERE email = '${email}'`);
 
-
-      if (!usuario.recordset || usuario.recordset.length === 0) {
+      if (usuario.recordset.length !== 0) {
+        console.log('oi')
         res.status(400);
         throw new Error("Email já está sendo utilizado.");
       }
@@ -128,7 +128,7 @@ class UsuariosControllers {
         .request()
         .query(
         `INSERT INTO Usuario(
-          data_nascimento, 
+          dataNascimento, 
           celular, 
           senha, 
           nome, 
@@ -139,7 +139,7 @@ class UsuariosControllers {
           bairro,
           estado,
           rua,
-          fk_Cargo_id) 
+          cargoId) 
           VALUES 
           (
             '${data}', 

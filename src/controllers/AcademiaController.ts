@@ -32,7 +32,7 @@ class AcademiaController {
       const pool = await sql.connect(config);
       const dataCriacao = new Date().toISOString();
       const imgUrl = await salvarImagem(
-        `${academia.nome}-base64`,
+        `${academia.nome.replace(' ', '-')}-base64`,
         academia.imagem
       );
       console.log("academia: ", academia)
@@ -41,16 +41,14 @@ class AcademiaController {
           descricao, 
           nome, 
           imagem, 
-          fk_Usuario_id, 
-          data_criacao
+          usuarioId 
           ) 
           VALUES 
           (
             '${academia.descricao}', 
             '${academia.nome}', 
             '${imgUrl}', 
-            ${academia.fk_Usuario_id}, 
-            '${new Date().toISOString()}')`
+            ${academia.usuarioId})`
       );
       res.status(201).send("Academia criado com sucesso");
     } catch (error) {

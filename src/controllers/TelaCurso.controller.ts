@@ -4,6 +4,7 @@ import { config } from "../config/db";
 import Curso from "../model/Curso";
 import TelaCurso from "../model/TelaCurso";
 import salvarImagem from "../azure/salvarImagem";
+import { string } from "zod";
 
 class TelaCursoControllers {
   async listarTelaCurso(req: Request, res: Response): Promise<void> {
@@ -11,6 +12,8 @@ class TelaCursoControllers {
       const pool = await sql.connect(config);
 
       const result = await pool.request().query("SELECT * FROM TelaCurso");
+
+      
 
       res.json(result); // Envia a resposta ao cliente
     } catch (error) {
@@ -24,17 +27,20 @@ class TelaCursoControllers {
   async listarSlidePorId(req: Request, res: Response): Promise<void> {
     try {
       const pool = await sql.connect(config);
-      const fk_Curso_id = req.params.id
+      const cursoId = req.params.id;
+
       const result = await pool
         .request()
         .query(
-          `SELECT * FROM TelaCurso where fk_Curso_id = ${fk_Curso_id}`
+          `SELECT * FROM TelaCurso WHERE cursoId = ${cursoId}`
         );
 
       const recordset = result.recordsets as TelaCurso[][];
 
       // Verifica se há dados no recordset
       const telaCurso = recordset.length > 0 ? recordset[0] : [];
+
+      console.log(telaCurso)
 
       if (telaCurso.length > 0) {
         res.json(telaCurso);
@@ -54,8 +60,7 @@ class TelaCursoControllers {
       const slidesData = JSON.parse(req.body.json);
       const pool = await sql.connect(config);
 
-      const insertPromises = slidesData.map(async (element: TelaCurso) => {
-        console.log("element: ", element);
+      const insertPromises = slidesData.map(async (element: any) => {
         let imgUrl;
         if (element.midia) {
           imgUrl = await salvarImagem(
@@ -64,34 +69,50 @@ class TelaCursoControllers {
           );
         }
 
+        let index = 1;
+        let stringAlternativa = '';
+        let stringValor = '';
+
+        element.alternativas.map((alternativa: any) =>{
+          if(index == 1){
+            stringAlternativa = `alternativa${index}`
+            stringValor = `'${alternativa}'`
+          } else {
+            stringAlternativa = `${stringAlternativa}, alternativa${index}`
+            stringValor = `${stringValor},'${alternativa}'`
+          }
+          index ++;
+        })
+
+        const resultTipo = await pool.request().query(`SELECT id FROM TipoTelaCurso WHERE nome = '${element.tipo}' `)
+
         const result = await pool.request().query(`
           INSERT INTO TelaCurso (
             texto,
             midia,
-            resposta,
-            fk_Curso_id,
+            correta,
+            cursoId,
             posicao,
-            alternativas,
-            feedbacks,
-            tipo
+            ${stringAlternativa},
+            feedbackPositivo,
+            feedbackNegativo,
+            tipoId
           ) VALUES (
             '${element.texto || ""}',
             '${imgUrl || ""}',
             '${element.resposta || ""}',
             ${cursoId},
             ${element.posicao},
-            '${element.alternativas || ""}',
-            '${element.feedbacks || ""}',
-            '${element.tipo}'
+            ${stringValor},
+            '${element.feedbacks[0] || ""}',
+            '${element.feedbacks[1] || ""}',
+            ${resultTipo.recordset[0].id}
           )
         `);
         return result;
       });
 
-      // Aguarda todas as operações de inserção serem concluídas
       const results = await Promise.all(insertPromises);
-
-      // Pode realizar alguma lógica com os resultados, se necessário
 
       res.json({ success: true });
     } catch (error) {

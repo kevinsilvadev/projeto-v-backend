@@ -1,10 +1,10 @@
 class TelaCurso {
   texto: string;
   midia: string | undefined;
-  resposta: string | undefined;
-  alternativas: string | undefined;
+  resposta: string[] | undefined;
+  alternativas: string[] | undefined;
   posicao: number;
-  feedbacks: string;
+  feedbacks: string[];
   tipo: string;
 
   constructor(
@@ -18,10 +18,10 @@ class TelaCurso {
   ) {
     this.texto = texto;
     this.midia = midia;
-    this.resposta = resposta;
-    this.alternativas = pergunta;
+    this.resposta = resposta?.split(',');
+    this.alternativas = pergunta?.split(',');
     this.posicao = posicao;
-    this.feedbacks = feedbacks;
+    this.feedbacks = feedbacks.split(',');
     this.tipo = tipo;
   }
 
@@ -34,18 +34,13 @@ class TelaCurso {
   static kTipo = "tipo";
 
   static fromMap(reqBody: any) {
-    const respostas = reqBody[TelaCurso.kResposta];
-    const alternativas = reqBody[TelaCurso.kAlternativas];
-    const feedbacks = reqBody[TelaCurso.kFeedbacks];
-    console.log(reqBody[TelaCurso.kPosicao]);
-
     return new TelaCurso(
       reqBody[TelaCurso.kTexto],
       reqBody[TelaCurso.kMidia],
-      alternativas.join(" "),
-      respostas.join(" "),
+      reqBody[TelaCurso.kResposta],
+      reqBody[TelaCurso.kAlternativas],
       reqBody[TelaCurso.kPosicao],
-      feedbacks.join(" "),
+      reqBody[TelaCurso.kFeedbacks],
       reqBody[TelaCurso.kTipo]
     );
   }

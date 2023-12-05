@@ -55,7 +55,7 @@ class Usuario {
   static kDataNascimento = "data_nascimento";
   static kColaborador = "colaborador";
   static kProfissao = "profissao";
-  static kCargo = "fk_Cargo_id";
+  static kCargo = "cargoId";
 
   static fromMap(reqBody: any): Usuario {
     return new Usuario(

@@ -1,37 +1,37 @@
 class Curso {
   id?: Number;
   descricao: string;
-  fk_Usuario_id: Number;
+  usuarioId: Number;
   data_criacao: Date;
-  fk_Academia_id: Number;
+  academiaId: Number;
   imagem: string;
   validado: boolean;
   titulo: string;
   constructor(
     id: number,
     descricao: string,
-    fk_Usuario_id: number,
+    usuarioId: number,
     data_criacao: Date,
-    fk_Academia_id: Number,
+    academiaId: Number,
     imagem: string,
     validado: boolean,
     titulo: string
   ) {
     this.id = id;
     this.descricao = descricao;
-    this.fk_Usuario_id = fk_Usuario_id;
+    this.usuarioId = usuarioId;
     this.data_criacao = data_criacao;
-    this.fk_Academia_id = fk_Academia_id;
+    this.academiaId = academiaId;
     this.imagem = imagem;
     this.validado = validado;
     this.titulo = titulo;
   }
 
   static kId = "id";
-  static kfk_Usuario_Id = "fk_Usuario_id";
+  static kusuarioId = "usuarioId";
   static kdescricao = "descricao";
   static kdata_criacao = "data_criacao";
-  static kfk_Academia_id = "fk_Academia_id";
+  static kacademiaId = "academiaId";
   static kimagem = "imagem";
   static kvalidado = "validado";
   static ktitulo = "titulo";
@@ -40,9 +40,9 @@ class Curso {
     return new Curso(
       reqBody[Curso.kId],
       reqBody[Curso.kdescricao],
-      reqBody[Curso.kfk_Usuario_Id],
+      reqBody[Curso.kusuarioId],
       reqBody[Curso.kdata_criacao],
-      reqBody[Curso.kfk_Academia_id],
+      reqBody[Curso.kacademiaId],
       reqBody[Curso.kimagem],
       reqBody[Curso.kvalidado],
       reqBody[Curso.ktitulo]
@@ -52,12 +52,12 @@ class Curso {
   toMap(): {} {
     return {
       [Curso.kId]: this.id,
-      [Curso.kfk_Usuario_Id]: this.fk_Usuario_id,
+      [Curso.kusuarioId]: this.usuarioId,
       [Curso.kdescricao]: this.descricao,
       [Curso.kdata_criacao]: this.data_criacao,
-      [Curso.kfk_Academia_id]: this.fk_Academia_id,
+      [Curso.kacademiaId]: this.academiaId,
       [Curso.kimagem]: this.imagem,
-      [Curso.kvalidado]: this.fk_Academia_id,
+      [Curso.kvalidado]: this.academiaId,
       [Curso.ktitulo]: this.titulo,
     };
   }

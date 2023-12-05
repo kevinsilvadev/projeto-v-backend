@@ -4,7 +4,7 @@ import { Connection } from 'tedious';
 dotenv.config()
 
 export const config = {  
-    server: 'dpaschoal-teste.database.windows.net', 
+    server: 'dpaschoal-teste2.database.windows.net', 
     authentication: {
         type: 'default',
         options: {
@@ -14,7 +14,7 @@ export const config = {
     },
     options: {
         encrypt: true,
-        database: 'dpaschoal-teste' 
+        database: 'dpaschoal-teste2' 
     }
 };  
 const connection = new Connection(config);  

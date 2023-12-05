@@ -4,6 +4,6 @@ import {Router} from 'express';
 export const cursosRouter: Router = Router();
 const cursosController: CursosController = new CursosController();
 
-cursosRouter.get('', cursosController.listarCursos);
+cursosRouter.get('/', cursosController.listarCursos);
 cursosRouter.post('/criar', cursosController.criarCurso);
 cursosRouter.put('/validar/:id', cursosController.validarCurso);
